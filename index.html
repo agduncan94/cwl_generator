@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="cwlgenerator">
+<head>
+	<meta charset="UTF-8">
+	<title>CWL Generator</title>
+	<link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css">
+	<link rel="stylesheet" href="main.css">
+	<script src="bower_components/angular/angular.js"></script>
+	<script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
+	<script src="bower_components/angular-drag-and-drop-lists/angular-drag-and-drop-lists.js"></script>
+	<script src="main.js"></script>
+</head>
+<body>
+
+<div ng-controller="GeneratorCtrl">
+	<div class="container">
+  		<div class="row">
+			<div class="page-header">
+  				<h1>CWL Generator <small>Create CWL files for tools and workflows</small></h1>
+			</div>
+
+			<div class="panel panel-default">
+				<div class="panel-heading">Command Line Tool</div>
+				<div class="panel-body">
+					<form name="cwlForm">
+						<label>CWL Version:</label>
+						<select name="cwlVersion" id="cwlVersion" ng-model="cwlDoc.cwlVersion">
+							<option ng-repeat="option in cwlVersions">{{option}}</option>
+						</select><br />
+						<label>Base Command:</label>
+						<input type="text" name="input" ng-model="cwlDoc.baseCommand">
+						<br />
+						<label>Inputs:</label>
+						<div>
+							<ul dnd-list="cwlDoc.inputs" class="list-group">
+							<li ng-repeat="input in cwlDoc.inputs"
+								dnd-draggable="input"
+								dnd-moved="(cwlDoc.inputs).splice($index, 1);updateInputOrder()"
+								class="list-group-item">
+								<label>ID:</label>
+								<input type="text" name="input" ng-model="input.id"><br />
+								<label>Label:</label>
+								<input type="text" name="input" ng-model="input.label"><br />
+								<label>Type:</label>
+								<select name="inputType" id="inputType" ng-model="input.type">
+									<option ng-repeat="inputType in inputTypes">{{inputType}}</option>
+								</select><br />
+								<label>Prefix:</label>
+								<input type="text" name="prefix" ng-model="input.inputBinding.prefix"><br />
+							</li>
+							</ul>
+						</div>
+						<button class="btn btn-default" ng-click="addInput()">
+							<span class="glyphicon glyphicon-plus" aria-hidden="true">
+							</span>
+						</button>
+						<br />
+						<br />
+						<label>Outputs:</label>
+						<div>
+							<div ng-repeat="output in cwlDoc.outputs">
+							</div>
+						</div>
+						<button class="btn btn-default" ng-click="addOutput()">
+							<span class="glyphicon glyphicon-plus" aria-hidden="true">
+							</span>
+						</button>
+					</form>
+				</div>
+			</div>
+			<div class="panel panel-default">
+				<div class="panel-heading">CWL Descriptor</div>
+				<div class="panel-body">
+					{{cwlDoc | json}}
+				</div>
+			</div>
+		</div>
+		<ul class="list-group">
+			<li class="list-group-item">Order of inputs = inputBinding.position</li>
+			<li class="list-group-item">Requirements and hints</li>
+			<li class="list-group-item">Get output working to the same level as input</li>
+			<li class="list-group-item">add label, doc for cwl tool</li>
+			<li class="list-group-item">add id field (identifier for tool)</li>
+			<li class="list-group-item">support stdin, stdout, stderr</li>
+			<li class="list-group-item">need to create a dependencies chart to see what is required when certain fields are set to specific things</li>
+			<li class="list-group-item"></li>
+		</ul>
+	</div>
+</div>
+
+</body>
+</html>

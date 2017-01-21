@@ -1,0 +1,23 @@
+{
+  "name": "cwl_generator",
+  "description": "A simple CWL generator package",
+  "main": "",
+  "authors": [
+    "Andrew Duncan <agduncan@uwaterloo.ca>"
+  ],
+  "license": "MIT",
+  "homepage": "",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "^3.3.7",
+    "angular": "^1.6.1",
+    "angular-bootstrap": "^2.4.0",
+    "angular-drag-and-drop-lists": "^2.1.0"
+  }
+}

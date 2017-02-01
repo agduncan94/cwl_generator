@@ -1,197 +1,216 @@
+
 <!DOCTYPE html>
 <html lang="en" ng-app="cwlgenerator">
 <head>
 	<meta charset="UTF-8">
 	<title>CWL Generator</title>
 	<link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css">
+	<link rel="stylesheet" href="https://cdn.rawgit.com/afeld/bootstrap-toc/v0.4.1/dist/bootstrap-toc.min.css">
 	<link rel="stylesheet" href="main.css">
 	<script src="bower_components/angular/angular.js"></script>
 	<script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
+	<script src="bower_components/jquery/dist/jquery.min.js"></script>
+	<script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+	<script src="https://cdn.rawgit.com/afeld/bootstrap-toc/v0.4.1/dist/bootstrap-toc.min.js"></script>
 	<script src="bower_components/angular-drag-and-drop-lists/angular-drag-and-drop-lists.js"></script>
 	<script src="main.js"></script>
 </head>
-<body>
-
+<body data-spy="scroll" data-target="#toc">
 	<div ng-controller="GeneratorCtrl">
 		<div class="container">
-			<div class="page-header">
-				<h1>CWL Generator <small>Create CWL files for tools and workflows</small></h1>
-			</div>
-			<p>This is a simple CWL descriptor generator form. It is meant to be used by beginners of CWL, and as such has been simplified to make it easier to use. It does not support the full set of features offered by CWL, though it should be enough for basic tools.</p>
+			<div class="row">
+				<div class="page-header">
+						<h1>CWL Generator <small>Create CWL files for tools and workflows</small></h1>
+					</div>
 
-			<p>Please note that this generator does not enforce any of the dependencies that exist within CWL descriptor files. It is up to the user to understand what different settings do and how they will impact other settings.</p>
+				<div class="col-sm-3">
+					<nav id="toc" data-spy="affix" data-toggle="toc"></nav>
+				</div>
+				<div class="col-sm-9">
+					<div>
+						<form name="cwlForm" class="form-horizontal">
+							<h3>General Information</h3>
+
+							<div class="form-group">
+								<label class="col-sm-2 control-label">CWL Version</label>
+								<div class="col-sm-10">
+									<select class="form-control" name="cwlVersion" id="cwlVersion" ng-model="cwlDoc.cwlVersion">
+										<option ng-repeat="option in cwlVersions">{{option}}</option>
+									</select>
+									<p class="form-text text-muted">
+										Currently only v1.0 is supported.
+									</p>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 control-label">ID</label>
+								<div class="col-sm-10">
+									<input class="form-control" type="text" name="input" ng-model="cwlDoc.id">
+									<p class="form-text text-muted">
+										A unique identifier for your tool.
+									</p>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 control-label">Base Command</label>
+								<div class="col-sm-10">
+									<input class="form-control" type="text" name="input" ng-model="cwlDoc.baseCommand">
+									<p class="form-text text-muted">
+										The base command of the tool (Ex. echo)
+									</p>
+								</div>
+							</div>
+						</form>
+					</div>
+
+					<div>
+						<form name="cwlForm" class="form-horizontal">
+							<h3>Hints</h3>							
+						</form>
+					</div>
+
+					<div>
+						<form name="cwlForm" class="form-horizontal">
+							<h3>Requirements</h3>							
+						</form>
+					</div>
+
+					<form name="cwlForm" class="form-horizontal">
+						<h3>Inputs</h3>
+						<ul dnd-list="cwlDoc.inputs"
+						dnd-allowed-types="inputArray"
+						class="list-group">
+						<li ng-repeat="input in cwlDoc.inputs"
+						dnd-draggable="input"
+						dnd-moved="(cwlDoc.inputs).splice($index, 1);updateInputOrder()"
+						dnd-type="inputArray[0]"
+						class="list-group-item">
+						<div class="form-group">
+							<label class="col-sm-2 control-label">ID</label>
+							<div class="col-sm-10">
+								<input class="form-control" type="text" name="input" ng-model="input.id">
+								<p class="form-text text-muted">
+									A unique identifier for the input.
+								</p>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-2 control-label">Label</label>
+							<div class="col-sm-10">
+								<input class="form-control" type="text" name="input" ng-model="input.label">
+								<p class="form-text text-muted">
+									A short descriptive label of the input.
+								</p>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-2 control-label">Type</label>
+							<div class="col-sm-10">
+								<select class="form-control"  name="inputType" id="inputType" ng-model="input.type">
+									<option ng-repeat="inputType in inputTypes">{{inputType}}</option>
+								</select>
+								<p class="form-text text-muted">
+									The type of the input.
+								</p>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-2 control-label">Prefix</label>
+							<div class="col-sm-10">
+								<input class="form-control" type="text" name="prefix" ng-model="input.inputBinding.prefix">
+								<p class="form-text text-muted">
+									The prefix used on the command line (Ex. --input-file).
+								</p>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-2 control-label">Separate</label>
+							<div class="col-sm-10">
+								<input class="form-control" type="checkbox" name="separate" ng-model="input.inputBinding.separate">
+								<p class="form-text text-muted">
+									When true, prefix and value are treated as separate command line arguments. When false, prefix and value are treated as one.
+								</p>
+							</div>
+						</div>
+
+						<button class="btn btn-danger" ng-click="(cwlDoc.inputs).splice($index, 1);updateInputOrder()">
+							<span class="glyphicon glyphicon-minus" aria-hidden="true">
+							</span>
+						</button>
+					</li>
+				</ul>
+				<button class="btn btn-primary" ng-click="addInput()">
+					<span class="glyphicon glyphicon-plus" aria-hidden="true">
+					</span>
+				</button>
+			</form>
 			<div>
 				<form name="cwlForm" class="form-horizontal">
-					<h3>General Information</h3>
-
-					<div class="form-group">
-						<label class="col-sm-2 control-label">CWL Version</label>
-						<div class="col-sm-10">
-							<select class="form-control" name="cwlVersion" id="cwlVersion" ng-model="cwlDoc.cwlVersion">
-								<option ng-repeat="option in cwlVersions">{{option}}</option>
-							</select>
-							<p class="form-text text-muted">
-								Currently only v1.0 is supported.
-							</p>
-						</div>
-					</div>
-					<div class="form-group">
-						<label class="col-sm-2 control-label">ID</label>
-						<div class="col-sm-10">
-							<input class="form-control" type="text" name="input" ng-model="cwlDoc.id">
-							<p class="form-text text-muted">
-								A unique identifier for your tool.
-							</p>
-						</div>
-					</div>
-					<div class="form-group">
-						<label class="col-sm-2 control-label">Base Command</label>
-						<div class="col-sm-10">
-							<input class="form-control" type="text" name="input" ng-model="cwlDoc.baseCommand">
-							<p class="form-text text-muted">
-								The base command of the tool (Ex. echo)
-							</p>
-						</div>
-					</div>
-				</form>
-			</div>
-
-			<div>
-				<form name="cwlForm" class="form-horizontal">
-					<h3>Inputs</h3>
-					<ul dnd-list="cwlDoc.inputs"
-					dnd-allowed-types="inputArray"
+					<h3>Outputs</h3>
+					<ul dnd-list="cwlDoc.outputs" 
+					dnd-allowed-types="outputArray"
 					class="list-group">
-					<li ng-repeat="input in cwlDoc.inputs"
-					dnd-draggable="input"
-					dnd-moved="(cwlDoc.inputs).splice($index, 1);updateInputOrder()"
-					dnd-type="inputArray[0]"
+					<li ng-repeat="output in cwlDoc.outputs"
+					dnd-draggable="output"
+					dnd-moved="(cwlDoc.outputs).splice($index, 1)"
+					dnd-type="outputArray[0]"
 					class="list-group-item">
 					<div class="form-group">
 						<label class="col-sm-2 control-label">ID</label>
 						<div class="col-sm-10">
-							<input class="form-control" type="text" name="input" ng-model="input.id">
+							<input class="form-control" type="text" name="output" ng-model="output.id">
 							<p class="form-text text-muted">
-								A unique identifier for the input.
+								A unique identifier for the output.
 							</p>
 						</div>
 					</div>
 					<div class="form-group">
 						<label class="col-sm-2 control-label">Label</label>
 						<div class="col-sm-10">
-							<input class="form-control" type="text" name="input" ng-model="input.label">
+							<input class="form-control" type="text" name="output" ng-model="output.label">
 							<p class="form-text text-muted">
-								A short descriptive label of the input.
+								A short descriptive label of the output.
 							</p>
 						</div>
 					</div>
 					<div class="form-group">
 						<label class="col-sm-2 control-label">Type</label>
 						<div class="col-sm-10">
-							<select class="form-control"  name="inputType" id="inputType" ng-model="input.type">
-								<option ng-repeat="inputType in inputTypes">{{inputType}}</option>
+							<select class="form-control"  name="outputType" id="outputType" ng-model="output.type">
+								<option ng-repeat="outputType in inputTypes">{{outputType}}</option>
 							</select>
 							<p class="form-text text-muted">
-								The type of the input.
+								The type of the output.
 							</p>
 						</div>
 					</div>
 					<div class="form-group">
-						<label class="col-sm-2 control-label">Prefix</label>
+						<label class="col-sm-2 control-label">Glob</label>
 						<div class="col-sm-10">
-							<input class="form-control" type="text" name="prefix" ng-model="input.inputBinding.prefix">
+							<input class="form-control" type="text" name="glob" ng-model="output.outputBinding.glob">
 							<p class="form-text text-muted">
-								The prefix used on the command line (Ex. --input-file).
-							</p>
-						</div>
-					</div>
-					<div class="form-group">
-						<label class="col-sm-2 control-label">Separate</label>
-						<div class="col-sm-10">
-							<input class="form-control" type="checkbox" name="separate" ng-model="input.inputBinding.separate">
-							<p class="form-text text-muted">
-								When true, prefix and value are treated as separate command line arguments. When false, prefix and value are treated as one.
+								The name of the output file. You can use a wildcard if you don't know the name in advance.
 							</p>
 						</div>
 					</div>
 
-					<button class="btn btn-danger" ng-click="(cwlDoc.inputs).splice($index, 1);updateInputOrder()">
+					<button class="btn btn-danger" ng-click="(cwlDoc.outputs).splice($index, 1)">
 						<span class="glyphicon glyphicon-minus" aria-hidden="true">
 						</span>
 					</button>
 				</li>
 			</ul>
-			<button class="btn btn-primary" ng-click="addInput()">
+			<button class="btn btn-primary" ng-click="addOutput()">
 				<span class="glyphicon glyphicon-plus" aria-hidden="true">
 				</span>
 			</button>
 		</form>
 	</div>
-	<div>
-		<form name="cwlForm" class="form-horizontal">
-			<h3>Outputs</h3>
-			<ul dnd-list="cwlDoc.outputs" 
-			dnd-allowed-types="outputArray"
-			class="list-group">
-			<li ng-repeat="output in cwlDoc.outputs"
-			dnd-draggable="output"
-			dnd-moved="(cwlDoc.outputs).splice($index, 1)"
-			dnd-type="outputArray[0]"
-			class="list-group-item">
-			<div class="form-group">
-				<label class="col-sm-2 control-label">ID</label>
-				<div class="col-sm-10">
-					<input class="form-control" type="text" name="output" ng-model="output.id">
-					<p class="form-text text-muted">
-						A unique identifier for the output.
-					</p>
-				</div>
-			</div>
-			<div class="form-group">
-				<label class="col-sm-2 control-label">Label</label>
-				<div class="col-sm-10">
-					<input class="form-control" type="text" name="output" ng-model="output.label">
-					<p class="form-text text-muted">
-						A short descriptive label of the output.
-					</p>
-				</div>
-			</div>
-			<div class="form-group">
-				<label class="col-sm-2 control-label">Type</label>
-				<div class="col-sm-10">
-					<select class="form-control"  name="outputType" id="outputType" ng-model="output.type">
-						<option ng-repeat="outputType in inputTypes">{{outputType}}</option>
-					</select>
-					<p class="form-text text-muted">
-						The type of the output.
-					</p>
-				</div>
-			</div>
-			<div class="form-group">
-				<label class="col-sm-2 control-label">Glob</label>
-				<div class="col-sm-10">
-					<input class="form-control" type="text" name="glob" ng-model="output.outputBinding.glob">
-					<p class="form-text text-muted">
-						The name of the output file. You can use a wildcard if you don't know the name in advance.
-					</p>
-				</div>
-			</div>
-
-			<button class="btn btn-danger" ng-click="(cwlDoc.outputs).splice($index, 1)">
-				<span class="glyphicon glyphicon-minus" aria-hidden="true">
-				</span>
-			</button>
-		</li>
-	</ul>
-	<button class="btn btn-primary" ng-click="addOutput()">
-		<span class="glyphicon glyphicon-plus" aria-hidden="true">
-		</span>
-	</button>
-</form>
+	<h3>CWL Document</h3>
+	<div class="well">
+		{{cwlDoc | json}}
+	</div>
 </div>
-<h2>CWL Document</h2>
-<div class="well">
-	{{cwlDoc | json}}
 </div>
 </div>
 </div>

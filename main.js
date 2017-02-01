@@ -10,7 +10,6 @@ angular.module('cwlgenerator', ['ui.bootstrap', 'dndLists']).controller('Generat
 
 	$scope.inputTypes = ["null", "boolean", "int", "long", "float", "double", "string", "File", "Directory"];
 	$scope.input = {
-		"ioType": "input",
 		"id": '',
 		"label": '',
 		"type": $scope.inputTypes[0],
@@ -21,7 +20,6 @@ angular.module('cwlgenerator', ['ui.bootstrap', 'dndLists']).controller('Generat
 		} 
 	};
 	$scope.output = {
-		"ioType": "output",
 		"id": '',
 		"label": '',
 		"type": $scope.inputTypes[0],
@@ -40,7 +38,6 @@ angular.module('cwlgenerator', ['ui.bootstrap', 'dndLists']).controller('Generat
 	$scope.addInput = function() {
 		$scope.cwlDoc.inputs.push($scope.input);
 		$scope.input = {
-			"ioType": "input",
 			"id": '',
 			"label": '',
 			"type": $scope.inputTypes[0],
@@ -55,7 +52,6 @@ angular.module('cwlgenerator', ['ui.bootstrap', 'dndLists']).controller('Generat
 	$scope.addOutput = function() {
 		$scope.cwlDoc.outputs.push($scope.output);
 		$scope.output = {
-			"ioType": "output",
 			"id": '',
 			"label": '',
 			"type": $scope.inputTypes[0],

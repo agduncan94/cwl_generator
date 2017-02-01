@@ -1,4 +1,5 @@
 angular.module('cwlgenerator', ['ui.bootstrap', 'dndLists']).controller('GeneratorCtrl', function ($scope, $log) {
+	$scope.baseCommandString = '';
 	$scope.cwlDoc = {
 		"cwlVersion": '',
 		"id": '',
@@ -9,6 +10,7 @@ angular.module('cwlgenerator', ['ui.bootstrap', 'dndLists']).controller('Generat
 	};
 
 	$scope.inputTypes = ["null", "boolean", "int", "long", "float", "double", "string", "File", "Directory"];
+	$scope.outputTypes = ["null", "boolean", "int", "long", "float", "double", "string", "File", "Directory", "stdout"]
 	$scope.input = {
 		"id": '',
 		"label": '',
@@ -66,4 +68,8 @@ angular.module('cwlgenerator', ['ui.bootstrap', 'dndLists']).controller('Generat
 			$scope.cwlDoc.inputs[i].inputBinding.position = i;
 		}
 	};
+
+	$scope.$watch('baseCommandString', function(newValue, oldValue) {
+		$scope.cwlDoc.baseCommand = $scope.baseCommandString.split(',');
+	});
 });

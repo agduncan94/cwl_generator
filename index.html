@@ -20,9 +20,8 @@
 		<div class="container">
 			<div class="row">
 				<div class="page-header">
-						<h1>CWL Generator <small>Create CWL files for tools and workflows</small></h1>
-					</div>
-
+					<h1>CWL Generator <small>Create CWL files for tools and workflows</small></h1>
+				</div>
 				<div class="col-sm-3">
 					<nav id="toc" data-spy="affix" data-toggle="toc"></nav>
 				</div>
@@ -54,9 +53,9 @@
 							<div class="form-group">
 								<label class="col-sm-2 control-label">Base Command</label>
 								<div class="col-sm-10">
-									<input class="form-control" type="text" name="input" ng-model="cwlDoc.baseCommand">
+									<input class="form-control" type="text" name="input" ng-model="baseCommandString">
 									<p class="form-text text-muted">
-										The base command of the tool (Ex. echo)
+										The base command of the tool (Ex. echo). Use commas to add required params.
 									</p>
 								</div>
 							</div>
@@ -177,7 +176,7 @@
 						<label class="col-sm-2 control-label">Type</label>
 						<div class="col-sm-10">
 							<select class="form-control"  name="outputType" id="outputType" ng-model="output.type">
-								<option ng-repeat="outputType in inputTypes">{{outputType}}</option>
+								<option ng-repeat="outputType in outputTypes">{{outputType}}</option>
 							</select>
 							<p class="form-text text-muted">
 								The type of the output.

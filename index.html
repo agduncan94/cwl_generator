@@ -44,7 +44,7 @@
 							<div class="form-group">
 								<label class="col-sm-2 control-label">ID</label>
 								<div class="col-sm-10">
-									<input class="form-control" type="text" name="input" ng-model="cwlDoc.id">
+									<input class="form-control" type="text" name="id" ng-model="cwlDoc.id">
 									<p class="form-text text-muted">
 										A unique identifier for your tool.
 									</p>
@@ -53,9 +53,27 @@
 							<div class="form-group">
 								<label class="col-sm-2 control-label">Base Command</label>
 								<div class="col-sm-10">
-									<input class="form-control" type="text" name="input" ng-model="baseCommandString">
+									<input class="form-control" type="text" name="baseCommand" ng-model="baseCommandString">
 									<p class="form-text text-muted">
 										The base command of the tool (Ex. echo). Use commas to add required params.
+									</p>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 control-label">STDOUT</label>
+								<div class="col-sm-10">
+									<input class="form-control" type="text" name="stdout" ng-model="stdout">
+									<p class="form-text text-muted">
+										File to store STDOUT of the tool.
+									</p>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 control-label">STDERR</label>
+								<div class="col-sm-10">
+									<input class="form-control" type="text" name="stderr" ng-model="stderr">
+									<p class="form-text text-muted">
+										File to store STDERR of the tool.
 									</p>
 								</div>
 							</div>
@@ -76,6 +94,9 @@
 
 					<form name="cwlForm" class="form-horizontal">
 						<h3>Inputs</h3>
+						<p class="text-muted">
+							Drag to change order.
+						</p>
 						<ul dnd-list="cwlDoc.inputs"
 						dnd-allowed-types="inputArray"
 						class="list-group">
@@ -121,17 +142,23 @@
 									The prefix used on the command line (Ex. --input-file).
 								</p>
 							</div>
-						</div>
-						<div class="form-group">
-							<label class="col-sm-2 control-label">Separate</label>
-							<div class="col-sm-10">
-								<input class="form-control" type="checkbox" name="separate" ng-model="input.inputBinding.separate">
-								<p class="form-text text-muted">
-									When true, prefix and value are treated as separate command line arguments. When false, prefix and value are treated as one.
-								</p>
+						</div>							
+
+						<button ng-show="isCollapsed" type="button" class="btn btn-default" ng-click="isCollapsed = false">[- Hide Advanced]</button>
+						<button ng-show="!isCollapsed" type="button" class="btn btn-default" ng-click="isCollapsed = true">[+ Show Advanced]</button>
+
+						<div uib-collapse="!isCollapsed">
+							<div class="form-group">
+								<label class="col-sm-2 control-label">Separate</label>
+								<div class="col-sm-10">
+									<input class="form-control" type="checkbox" name="separate" ng-model="input.inputBinding.separate">
+									<p class="form-text text-muted">
+										When true, prefix and value are treated as separate command line arguments. When false, prefix and value are treated as one.
+									</p>
+								</div>
 							</div>
 						</div>
-
+						<hr>
 						<button class="btn btn-danger" ng-click="(cwlDoc.inputs).splice($index, 1);updateInputOrder()">
 							<span class="glyphicon glyphicon-minus" aria-hidden="true">
 							</span>
@@ -146,6 +173,9 @@
 			<div>
 				<form name="cwlForm" class="form-horizontal">
 					<h3>Outputs</h3>
+					<p class="text-muted">
+						Drag to change order.
+					</p>
 					<ul dnd-list="cwlDoc.outputs" 
 					dnd-allowed-types="outputArray"
 					class="list-group">
@@ -163,7 +193,7 @@
 							</p>
 						</div>
 					</div>
-					<div class="form-group">
+					<div class="form-group" ng-hide="output.type == 'stdout' || output.type == 'stderr'">
 						<label class="col-sm-2 control-label">Label</label>
 						<div class="col-sm-10">
 							<input class="form-control" type="text" name="output" ng-model="output.label">
@@ -175,15 +205,16 @@
 					<div class="form-group">
 						<label class="col-sm-2 control-label">Type</label>
 						<div class="col-sm-10">
-							<select class="form-control"  name="outputType" id="outputType" ng-model="output.type">
+							<select class="form-control" name="outputType" id="outputType" ng-model="output.type" ng-hide="output.type == 'stdout' || output.type == 'stderr'">
 								<option ng-repeat="outputType in outputTypes">{{outputType}}</option>
 							</select>
+							<input class="form-control" type="text" name="output" ng-model="output.type" ng-show="output.type == 'stdout' || output.type == 'stderr'" ng-disabled="output.type == 'stdout' || output.type == 'stderr'">
 							<p class="form-text text-muted">
 								The type of the output.
 							</p>
 						</div>
 					</div>
-					<div class="form-group">
+					<div class="form-group" ng-hide="output.type == 'stdout' || output.type == 'stderr'">
 						<label class="col-sm-2 control-label">Glob</label>
 						<div class="col-sm-10">
 							<input class="form-control" type="text" name="glob" ng-model="output.outputBinding.glob">
@@ -193,7 +224,7 @@
 						</div>
 					</div>
 
-					<button class="btn btn-danger" ng-click="(cwlDoc.outputs).splice($index, 1)">
+					<button class="btn btn-danger" ng-click="(cwlDoc.outputs).splice($index, 1)" ng-hide="output.type == 'stdout' || output.type == 'stderr'">
 						<span class="glyphicon glyphicon-minus" aria-hidden="true">
 						</span>
 					</button>

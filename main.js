@@ -1,4 +1,5 @@
 angular.module('cwlgenerator', ['ui.bootstrap', 'dndLists']).controller('GeneratorCtrl', function ($scope, $log) {
+	$scope.completeCwlDoc =  {};
 	$scope.baseCommandString = '';
 	$scope.cwlDoc = {
 		"cwlVersion": '',
@@ -10,7 +11,7 @@ angular.module('cwlgenerator', ['ui.bootstrap', 'dndLists']).controller('Generat
 	};
 
 	$scope.inputTypes = ["null", "boolean", "int", "long", "float", "double", "string", "File", "Directory"];
-	$scope.outputTypes = ["null", "boolean", "int", "long", "float", "double", "string", "File", "Directory", "stdout"]
+	$scope.outputTypes = ["null", "boolean", "int", "long", "float", "double", "string", "File", "Directory"]
 	$scope.input = {
 		"id": '',
 		"label": '',
@@ -33,6 +34,17 @@ angular.module('cwlgenerator', ['ui.bootstrap', 'dndLists']).controller('Generat
 	$scope.inputArray = ["input"];
 	$scope.outputArray = ["output"];
 
+	$scope.stdout = '';
+	$scope.stderr = '';
+
+	$scope.stdoutOutput = {
+		"id": 'stdout',
+		"type": 'stdout'
+	};
+	$scope.stderrOutput = {
+		"id": 'stderr',
+		"type": 'stderr'
+	};
 
 	// Initialize
 	$scope.cwlDoc.cwlVersion = $scope.cwlVersions[0];
@@ -70,6 +82,28 @@ angular.module('cwlgenerator', ['ui.bootstrap', 'dndLists']).controller('Generat
 	};
 
 	$scope.$watch('baseCommandString', function(newValue, oldValue) {
-		$scope.cwlDoc.baseCommand = $scope.baseCommandString.split(',');
+		$scope.cwlDoc.baseCommand = $scope.baseCommandString.split(',').filter(Boolean);
+	});
+
+	$scope.$watch('stdout', function(newValue, oldValue) {
+		if ((newValue == null || newValue ==  '')) {
+			delete $scope.cwlDoc.stdout;
+		} else {
+			if (oldValue == null || oldValue == '') {
+				$scope.cwlDoc.outputs.push($scope.stdoutOutput);
+			}
+			$scope.cwlDoc.stdout = $scope.stdout;
+		}
+	});
+
+	$scope.$watch('stderr', function(newValue, oldValue) {
+		if ((newValue == null || newValue ==  '')) {
+			delete $scope.cwlDoc.stderr;
+		} else {
+			if (oldValue == null || oldValue == '') {
+				$scope.cwlDoc.outputs.push($scope.stderrOutput);
+			}
+			$scope.cwlDoc.stderr = $scope.stderr;
+		}
 	});
 });

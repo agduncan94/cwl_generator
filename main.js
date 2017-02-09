@@ -1,18 +1,18 @@
 angular.module('cwlgenerator', ['ui.bootstrap', 'dndLists']).controller('GeneratorCtrl', function ($scope, $log) {
-	$scope.completeCwlDoc =  {};
 	$scope.baseCommandString = '';
 	$scope.cwlDoc = {
 		"cwlVersion": '',
 		"id": '',
 		"class": 'CommandLineTool',
+		"arguments": [],
 		"baseCommand": '',
 		"hints": {},
 		"inputs": [],
 		"outputs": []
 	};
 
-	$scope.inputTypes = ["null", "boolean", "int", "long", "float", "double", "string", "File", "Directory", "boolean[]", "int[]", "long[]", "float[]", "double[]", "string[]", "File[]", "Directory[]"];
-	$scope.outputTypes = ["null", "boolean", "int", "long", "float", "double", "string", "File", "Directory", "boolean[]", "int[]", "long[]", "float[]", "double[]", "string[]", "File[]", "Directory[]"]
+	$scope.inputTypes = ["null", "boolean", "int", "long", "float", "double", "string", "File", "Directory"];
+	$scope.outputTypes = ["null", "boolean", "int", "long", "float", "double", "string", "File", "Directory"]
 	$scope.input = {
 		"id": '',
 		"label": '',
@@ -33,6 +33,8 @@ angular.module('cwlgenerator', ['ui.bootstrap', 'dndLists']).controller('Generat
 			"glob": ''
 		} 
 	};
+
+	$scope.argument = '';
 	$scope.cwlVersions = ["v1.0"];
 	$scope.inputArray = ["input"];
 	$scope.outputArray = ["output"];
@@ -89,6 +91,10 @@ angular.module('cwlgenerator', ['ui.bootstrap', 'dndLists']).controller('Generat
 		};
 	};
 
+	$scope.addArgument = function() {
+		$scope.cwlDoc.arguments.push($scope.argument);
+	};
+
 	$scope.updateInputOrder = function() {
 		for (var i = 0; i < $scope.cwlDoc.inputs.length; i++) {
 			$scope.cwlDoc.inputs[i].inputBinding.position = i;
@@ -126,6 +132,15 @@ angular.module('cwlgenerator', ['ui.bootstrap', 'dndLists']).controller('Generat
 				$scope.cwlDoc.outputs.push($scope.stderrOutput);
 			}
 			$scope.cwlDoc.stderr = $scope.stderr;
+		}
+	});
+
+	$scope.$watch('dockerReq', function(newValue, oldValue) {
+		if ((newValue == null || newValue ==  '')) {
+			delete $scope.cwlDoc.hints.DockerRequirement;
+		} else {
+			$scope.cwlDoc.hints.DockerRequirement = $scope.dockerReqObject;
+			$scope.cwlDoc.hints.DockerRequirement.dockerPull = $scope.dockerReq;
 		}
 	});
 

@@ -103,7 +103,7 @@
 
 					<form name="cwlForm" class="form-horizontal">
 						<h3>Inputs</h3>
-						<button class="btn btn-default" ng-click="toggleMinimizeInput()" uib-tooltip="Minimize inputs">
+						<button class="btn btn-default" ng-click="toggleMinimizeInput()" uib-tooltip="Toggle minimize inputs">
 							<span ng-show="minimizeInputs == false" class="glyphicon glyphicon-resize-small" aria-hidden="true"></span>
 							<span ng-show="minimizeInputs == true" class="glyphicon glyphicon-resize-full" aria-hidden="true"></span>
 						</button>
@@ -197,7 +197,7 @@
 			<div>
 				<form name="cwlForm" class="form-horizontal">
 					<h3>Outputs</h3>
-					<button class="btn btn-default" ng-click="toggleMinimizeOutput()" uib-tooltip="Minimize outputs">
+					<button class="btn btn-default" ng-click="toggleMinimizeOutput()" uib-tooltip="Toggle minimize outputs">
 						<span ng-show="minimizeOutputs == false" class="glyphicon glyphicon-resize-small" aria-hidden="true"></span>
 						<span ng-show="minimizeOutputs == true" class="glyphicon glyphicon-resize-full" aria-hidden="true"></span>
 					</button>
@@ -271,6 +271,39 @@
 				<span class="glyphicon glyphicon-plus" aria-hidden="true">
 				</span>
 			</button>
+		</form>
+	</div>
+	<div>
+		<form name="cwlForm" class="form-horizontal">
+			<h3>Extras</h3>
+			<p class="form-text text-muted">
+				Less commonly used settings.
+			</p>
+			<div class="form-group col-sm-12">
+				<label class="control-label">Additional Command Line Arguments</label>
+				<p class="form-text text-muted">
+					For when command line parameters don't correctly map to the concept of input shown above.
+				</p>
+				<ul class="list-group">
+					<li ng-repeat="arg in cwlDoc.arguments track by $index" class="list-group-item">
+						<div class="form-group">
+							<div class="col-sm-10">
+								<input class="form-control" type="text" name="arg" ng-model="cwlDoc.arguments[$index]">
+							</div>
+							<div class="col-sm-2">
+								<button class="btn btn-danger" ng-click="(cwlDoc.arguments).splice($index, 1)">
+									<span class="glyphicon glyphicon-minus" aria-hidden="true">
+									</span>
+								</button>
+							</div>
+						</div>
+					</li>
+				</ul>
+				<button class="btn btn-primary" ng-click="addArgument()">
+					<span class="glyphicon glyphicon-plus" aria-hidden="true">
+					</span>
+				</button>
+			</div>
 		</form>
 	</div>
 	<h3>CWL Document</h3>

@@ -109,6 +109,26 @@ angular.module('cwlgenerator', ['ui.bootstrap', 'dndLists']).controller('Generat
 		$scope.minimizeOutputs = !$scope.minimizeOutputs;
 	};
 
+	$scope.removeStdErrOutput = function() {
+		for (var i = 0; i < $scope.cwlDoc.outputs.length; i++) {
+			if($scope.cwlDoc.outputs[i].type == "stderr") {
+				delete $scope.cwlDoc.outputs[i];
+				$scope.cwlDoc.outputs.splice(i, 1);
+				break;
+			}
+		}
+	};
+
+	$scope.removeStdOutOutput = function() {
+		for (var i = 0; i < $scope.cwlDoc.outputs.length; i++) {
+			if($scope.cwlDoc.outputs[i].type == "stdout") {
+				delete $scope.cwlDoc.outputs[i];
+				$scope.cwlDoc.outputs.splice(i, 1);
+				break;
+			}
+		}
+	};
+
 	$scope.$watch('baseCommandString', function(newValue, oldValue) {
 		$scope.cwlDoc.baseCommand = $scope.baseCommandString.split(',').filter(Boolean);
 	});
@@ -116,6 +136,7 @@ angular.module('cwlgenerator', ['ui.bootstrap', 'dndLists']).controller('Generat
 	$scope.$watch('stdout', function(newValue, oldValue) {
 		if ((newValue == null || newValue ==  '')) {
 			delete $scope.cwlDoc.stdout;
+			$scope.removeStdOutOutput();
 		} else {
 			if (oldValue == null || oldValue == '') {
 				$scope.cwlDoc.outputs.push($scope.stdoutOutput);
@@ -127,20 +148,12 @@ angular.module('cwlgenerator', ['ui.bootstrap', 'dndLists']).controller('Generat
 	$scope.$watch('stderr', function(newValue, oldValue) {
 		if ((newValue == null || newValue ==  '')) {
 			delete $scope.cwlDoc.stderr;
+			$scope.removeStdErrOutput();
 		} else {
 			if (oldValue == null || oldValue == '') {
 				$scope.cwlDoc.outputs.push($scope.stderrOutput);
 			}
 			$scope.cwlDoc.stderr = $scope.stderr;
-		}
-	});
-
-	$scope.$watch('dockerReq', function(newValue, oldValue) {
-		if ((newValue == null || newValue ==  '')) {
-			delete $scope.cwlDoc.hints.DockerRequirement;
-		} else {
-			$scope.cwlDoc.hints.DockerRequirement = $scope.dockerReqObject;
-			$scope.cwlDoc.hints.DockerRequirement.dockerPull = $scope.dockerReq;
 		}
 	});
 

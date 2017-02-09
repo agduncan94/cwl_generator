@@ -6,6 +6,7 @@ angular.module('cwlgenerator', ['ui.bootstrap', 'dndLists']).controller('Generat
 		"id": '',
 		"class": 'CommandLineTool',
 		"baseCommand": '',
+		"hints": {},
 		"inputs": [],
 		"outputs": []
 	};
@@ -34,6 +35,7 @@ angular.module('cwlgenerator', ['ui.bootstrap', 'dndLists']).controller('Generat
 	$scope.inputArray = ["input"];
 	$scope.outputArray = ["output"];
 
+	// STDOUT/STDERR variables
 	$scope.stdout = '';
 	$scope.stderr = '';
 
@@ -44,6 +46,12 @@ angular.module('cwlgenerator', ['ui.bootstrap', 'dndLists']).controller('Generat
 	$scope.stderrOutput = {
 		"id": 'stderr',
 		"type": 'stderr'
+	};
+
+	// Docker requirement variables
+	$scope.dockerReq = '';
+	$scope.dockerReqObject = {
+		"dockerPull": ''
 	};
 
 	// Initialize
@@ -104,6 +112,15 @@ angular.module('cwlgenerator', ['ui.bootstrap', 'dndLists']).controller('Generat
 				$scope.cwlDoc.outputs.push($scope.stderrOutput);
 			}
 			$scope.cwlDoc.stderr = $scope.stderr;
+		}
+	});
+
+	$scope.$watch('dockerReq', function(newValue, oldValue) {
+		if ((newValue == null || newValue ==  '')) {
+			delete $scope.cwlDoc.hints.DockerRequirement;
+		} else {
+			$scope.cwlDoc.hints.DockerRequirement = $scope.dockerReqObject;
+			$scope.cwlDoc.hints.DockerRequirement.dockerPull = $scope.dockerReq;
 		}
 	});
 });

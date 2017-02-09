@@ -16,6 +16,7 @@ angular.module('cwlgenerator', ['ui.bootstrap', 'dndLists']).controller('Generat
 	$scope.input = {
 		"id": '',
 		"label": '',
+		"doc": '',
 		"type": $scope.inputTypes[0],
 		"inputBinding": {
 			"position": 0,
@@ -26,6 +27,7 @@ angular.module('cwlgenerator', ['ui.bootstrap', 'dndLists']).controller('Generat
 	$scope.output = {
 		"id": '',
 		"label": '',
+		"doc": '',
 		"type": $scope.inputTypes[0],
 		"outputBinding": {
 			"glob": ''
@@ -53,6 +55,10 @@ angular.module('cwlgenerator', ['ui.bootstrap', 'dndLists']).controller('Generat
 	$scope.dockerReqObject = {
 		"dockerPull": ''
 	};
+
+	// Minimization variables
+	$scope.minimizeInputs = false;
+	$scope.minimizeOutputs = false;
 
 	// Initialize
 	$scope.cwlDoc.cwlVersion = $scope.cwlVersions[0];
@@ -87,6 +93,14 @@ angular.module('cwlgenerator', ['ui.bootstrap', 'dndLists']).controller('Generat
 		for (var i = 0; i < $scope.cwlDoc.inputs.length; i++) {
 			$scope.cwlDoc.inputs[i].inputBinding.position = i;
 		}
+	};
+
+	$scope.toggleMinimizeInput = function() {
+		$scope.minimizeInputs = !$scope.minimizeInputs;
+	};
+
+	$scope.toggleMinimizeOutput = function() {
+		$scope.minimizeOutputs = !$scope.minimizeOutputs;
 	};
 
 	$scope.$watch('baseCommandString', function(newValue, oldValue) {

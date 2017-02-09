@@ -103,6 +103,10 @@
 
 					<form name="cwlForm" class="form-horizontal">
 						<h3>Inputs</h3>
+						<button class="btn btn-default" ng-click="toggleMinimizeInput()" uib-tooltip="Minimize inputs">
+							<span ng-show="minimizeInputs == false" class="glyphicon glyphicon-resize-small" aria-hidden="true"></span>
+							<span ng-show="minimizeInputs == true" class="glyphicon glyphicon-resize-full" aria-hidden="true"></span>
+						</button>
 						<p class="text-muted">
 							Drag to change order.
 						</p>
@@ -123,7 +127,7 @@
 								</p>
 							</div>
 						</div>
-						<div class="form-group">
+						<div class="form-group" ng-hide="minimizeInputs">
 							<label class="col-sm-2 control-label">Label</label>
 							<div class="col-sm-10">
 								<input class="form-control" type="text" name="input" ng-model="input.label">
@@ -132,7 +136,16 @@
 								</p>
 							</div>
 						</div>
-						<div class="form-group">
+						<div class="form-group" ng-hide="minimizeInputs">
+							<label class="col-sm-2 control-label">Doc</label>
+							<div class="col-sm-10">
+								<input class="form-control" type="text" name="doc" ng-model="input.doc">
+								<p class="form-text text-muted">
+									A long description of the input.
+								</p>
+							</div>
+						</div>
+						<div class="form-group" ng-hide="minimizeInputs">
 							<label class="col-sm-2 control-label">Type</label>
 							<div class="col-sm-10">
 								<select class="form-control"  name="inputType" id="inputType" ng-model="input.type">
@@ -143,7 +156,7 @@
 								</p>
 							</div>
 						</div>
-						<div class="form-group">
+						<div class="form-group" ng-hide="minimizeInputs">
 							<label class="col-sm-2 control-label">Prefix</label>
 							<div class="col-sm-10">
 								<input class="form-control" type="text" name="prefix" ng-model="input.inputBinding.prefix">
@@ -153,12 +166,12 @@
 							</div>
 						</div>							
 
-						<hr>
+						<hr ng-hide="minimizeInputs">
 
-						<button ng-show="isCollapsed" type="button" class="btn btn-default" ng-click="isCollapsed = false">[- Hide Advanced]</button>
-						<button ng-show="!isCollapsed" type="button" class="btn btn-default" ng-click="isCollapsed = true">[+ Show Advanced]</button>
+						<button ng-show="isCollapsed && !minimizeInputs" type="button" class="btn btn-default" ng-click="isCollapsed = false">[- Hide Advanced]</button>
+						<button ng-show="!isCollapsed && !minimizeInputs" type="button" class="btn btn-default" ng-click="isCollapsed = true">[+ Show Advanced]</button>
 
-						<div uib-collapse="!isCollapsed">
+						<div uib-collapse="!isCollapsed" ng-hide="minimizeInputs">
 							<div class="form-group">
 								<label class="col-sm-2 control-label">Separate</label>
 								<div class="col-sm-10">
@@ -169,7 +182,7 @@
 								</div>
 							</div>
 						</div>
-						<br><br>
+						<br ng-hide="minimizeInputs"><br ng-hide="minimizeInputs">
 						<button class="btn btn-danger" ng-click="(cwlDoc.inputs).splice($index, 1);updateInputOrder()">
 							<span class="glyphicon glyphicon-minus" aria-hidden="true">
 							</span>
@@ -184,6 +197,10 @@
 			<div>
 				<form name="cwlForm" class="form-horizontal">
 					<h3>Outputs</h3>
+					<button class="btn btn-default" ng-click="toggleMinimizeOutput()" uib-tooltip="Minimize outputs">
+						<span ng-show="minimizeOutputs == false" class="glyphicon glyphicon-resize-small" aria-hidden="true"></span>
+						<span ng-show="minimizeOutputs == true" class="glyphicon glyphicon-resize-full" aria-hidden="true"></span>
+					</button>
 					<p class="text-muted">
 						Drag to change order.
 					</p>
@@ -204,7 +221,7 @@
 							</p>
 						</div>
 					</div>
-					<div class="form-group" ng-hide="output.type == 'stdout' || output.type == 'stderr'">
+					<div class="form-group" ng-hide="output.type == 'stdout' || output.type == 'stderr' || minimizeOutputs">
 						<label class="col-sm-2 control-label">Label</label>
 						<div class="col-sm-10">
 							<input class="form-control" type="text" name="output" ng-model="output.label">
@@ -213,7 +230,16 @@
 							</p>
 						</div>
 					</div>
-					<div class="form-group">
+					<div class="form-group" ng-hide="output.type == 'stdout' || output.type == 'stderr' || minimizeOutputs">
+						<label class="col-sm-2 control-label">Doc</label>
+						<div class="col-sm-10">
+							<input class="form-control" type="text" name="doc" ng-model="output.doc">
+							<p class="form-text text-muted">
+								A long description of the output.
+							</p>
+						</div>
+					</div>
+					<div class="form-group" ng-hide="minimizeOutputs">
 						<label class="col-sm-2 control-label">Type</label>
 						<div class="col-sm-10">
 							<select class="form-control" name="outputType" id="outputType" ng-model="output.type" ng-hide="output.type == 'stdout' || output.type == 'stderr'">
@@ -225,7 +251,7 @@
 							</p>
 						</div>
 					</div>
-					<div class="form-group" ng-hide="output.type == 'stdout' || output.type == 'stderr'">
+					<div class="form-group" ng-hide="output.type == 'stdout' || output.type == 'stderr' || minimizeOutputs">
 						<label class="col-sm-2 control-label">Glob</label>
 						<div class="col-sm-10">
 							<input class="form-control" type="text" name="glob" ng-model="output.outputBinding.glob">

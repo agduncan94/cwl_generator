@@ -11,8 +11,8 @@ angular.module('cwlgenerator', ['ui.bootstrap', 'dndLists']).controller('Generat
 		"outputs": []
 	};
 
-	$scope.inputTypes = ["null", "boolean", "int", "long", "float", "double", "string", "File", "Directory"];
-	$scope.outputTypes = ["null", "boolean", "int", "long", "float", "double", "string", "File", "Directory"]
+	$scope.inputTypes = ["null", "boolean", "int", "long", "float", "double", "string", "File", "Directory", "boolean[]", "int[]", "long[]", "float[]", "double[]", "string[]", "File[]", "Directory[]"];
+	$scope.outputTypes = ["null", "boolean", "int", "long", "float", "double", "string", "File", "Directory", "boolean[]", "int[]", "long[]", "float[]", "double[]", "string[]", "File[]", "Directory[]"]
 	$scope.input = {
 		"id": '',
 		"label": '',

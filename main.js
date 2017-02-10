@@ -1,4 +1,4 @@
-angular.module('cwlgenerator', ['ui.bootstrap', 'dndLists']).controller('GeneratorCtrl', function ($scope, $log) {
+angular.module('cwlgenerator', ['ui.bootstrap', 'dndLists', 'ngPrettyJson']).controller('GeneratorCtrl', function ($scope, $log) {
 	$scope.baseCommandString = '';
 	$scope.cwlDoc = {
 		"cwlVersion": '',
@@ -7,6 +7,7 @@ angular.module('cwlgenerator', ['ui.bootstrap', 'dndLists']).controller('Generat
 		"arguments": [],
 		"baseCommand": '',
 		"hints": {},
+		"requirements": {},
 		"inputs": [],
 		"outputs": []
 	};

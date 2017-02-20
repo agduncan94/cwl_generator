@@ -320,6 +320,30 @@
 				<p class="form-text text-muted">
 					Environment variables
 				</p>
+				<ul class="list-group">
+					<li ng-repeat="arg in cwlDoc.requirements.EnvVarRequirement.envDef track by $index" class="list-group-item">
+						<div class="form-group">
+							<label class="col-sm-2 control-label">Name</label>
+							<div class="col-sm-10">
+								<input class="form-control" type="text" name="arg" ng-model="cwlDoc.requirements.EnvVarRequirement.envDef[$index].envName">
+							</div>
+							<label class="col-sm-2 control-label">Value</label>
+							<div class="col-sm-10">
+								<input class="form-control" type="text" name="arg" ng-model="cwlDoc.requirements.EnvVarRequirement.envDef[$index].envValue">
+							</div>
+							<div class="col-sm-2">
+								<button class="btn btn-danger" ng-click="(cwlDoc.requirements.EnvVarRequirement.envDef).splice($index, 1);removeEnvVar()">
+									<span class="glyphicon glyphicon-minus" aria-hidden="true">
+									</span>
+								</button>
+							</div>
+						</div>
+					</li>
+				</ul>
+				<button class="btn btn-primary" ng-click="addEnvVar()">
+					<span class="glyphicon glyphicon-plus" aria-hidden="true">
+					</span>
+				</button>
 			</div>
 		</form>
 	</div>

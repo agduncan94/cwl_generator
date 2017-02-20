@@ -40,7 +40,7 @@ angular.module('cwlgenerator', ['ui.bootstrap', 'dndLists', 'ngPrettyJson']).con
 	$scope.inputArray = ["input"];
 	$scope.outputArray = ["output"];
 
-	// STDOUT/STDERR variables
+	// STDIN/STDOUT/STDERR variables
 	$scope.stdout = '';
 	$scope.stderr = '';
 	$scope.stdin = '';
@@ -49,9 +49,15 @@ angular.module('cwlgenerator', ['ui.bootstrap', 'dndLists', 'ngPrettyJson']).con
 		"id": 'stdout',
 		"type": 'stdout'
 	};
+
 	$scope.stderrOutput = {
 		"id": 'stderr',
 		"type": 'stderr'
+	};
+
+	// Environment variables
+	$scope.envVariableDef = {
+		"envDef": []
 	};
 
 	// Docker requirement variables
@@ -96,6 +102,20 @@ angular.module('cwlgenerator', ['ui.bootstrap', 'dndLists', 'ngPrettyJson']).con
 	$scope.addArgument = function() {
 		$scope.cwlDoc.arguments.push($scope.argument);
 	};
+
+	$scope.addEnvVar = function() {
+		if ($scope.cwlDoc.requirements.EnvVarRequirement == null) {
+			$scope.cwlDoc.requirements.EnvVarRequirement = {};
+			$scope.cwlDoc.requirements.EnvVarRequirement.envDef = [];
+		}
+		$scope.cwlDoc.requirements.EnvVarRequirement.envDef.push({"envName": "","envValue": ""});
+	};
+
+	$scope.removeEnvVar = function() {
+		if ($scope.cwlDoc.requirements.EnvVarRequirement.envDef.length == 0) {
+			delete $scope.cwlDoc.requirements.EnvVarRequirement;
+		}
+	}
 
 	$scope.updateInputOrder = function() {
 		for (var i = 0; i < $scope.cwlDoc.inputs.length; i++) {

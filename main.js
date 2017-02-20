@@ -43,6 +43,7 @@ angular.module('cwlgenerator', ['ui.bootstrap', 'dndLists', 'ngPrettyJson']).con
 	// STDOUT/STDERR variables
 	$scope.stdout = '';
 	$scope.stderr = '';
+	$scope.stdin = '';
 
 	$scope.stdoutOutput = {
 		"id": 'stdout',
@@ -155,6 +156,14 @@ angular.module('cwlgenerator', ['ui.bootstrap', 'dndLists', 'ngPrettyJson']).con
 				$scope.cwlDoc.outputs.push($scope.stderrOutput);
 			}
 			$scope.cwlDoc.stderr = $scope.stderr;
+		}
+	});
+
+	$scope.$watch('stdin', function(newValue, oldValue) {
+		if ((newValue == null || newValue ==  '')) {
+			delete $scope.cwlDoc.stdin;
+		} else {
+			$scope.cwlDoc.stdin = $scope.stdin;
 		}
 	});
 

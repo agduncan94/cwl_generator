@@ -195,4 +195,8 @@ angular.module('cwlgenerator', ['ui.bootstrap', 'dndLists', 'ngPrettyJson']).con
 			$scope.cwlDoc.hints.DockerRequirement.dockerPull = $scope.dockerReq;
 		}
 	});
+
+	$scope.getCWLDoc = function(){
+		return ($scope.cwlDoc);
+	};
 });

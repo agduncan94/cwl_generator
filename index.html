@@ -36,7 +36,7 @@
 								<label class="col-sm-2 control-label">CWL Version</label>
 								<div class="col-sm-10">
 									<select class="form-control" name="cwlVersion" id="cwlVersion" ng-model="cwlDoc.cwlVersion">
-										<option ng-repeat="option in cwlVersions">{{option}}</option>
+										<option ng-repeat="option in cwlVersions track by $index">{{option}}</option>
 									</select>
 									<p class="form-text text-muted">
 										Currently only v1.0 is supported.
@@ -124,7 +124,7 @@
 						<ul dnd-list="cwlDoc.inputs"
 						dnd-allowed-types="inputArray"
 						class="list-group">
-						<li ng-repeat="input in cwlDoc.inputs"
+						<li ng-repeat="input in cwlDoc.inputs track by $index"
 						dnd-draggable="input"
 						dnd-moved="(cwlDoc.inputs).splice($index, 1);updateInputOrder()"
 						dnd-type="inputArray[0]"
@@ -318,7 +318,7 @@
 			<div class="form-group col-sm-12">
 				<label class="control-label">Environment Variables</label>
 				<p class="form-text text-muted">
-					Environment variables
+					Setup environment variables to be set in runtime environment.
 				</p>
 				<ul class="list-group">
 					<li ng-repeat="arg in cwlDoc.requirements.EnvVarRequirement.envDef track by $index" class="list-group-item">
@@ -326,10 +326,16 @@
 							<label class="col-sm-2 control-label">Name</label>
 							<div class="col-sm-10">
 								<input class="form-control" type="text" name="arg" ng-model="cwlDoc.requirements.EnvVarRequirement.envDef[$index].envName">
+								<p class="form-text text-muted">
+									A unique name for the environment variable.
+								</p>
 							</div>
 							<label class="col-sm-2 control-label">Value</label>
 							<div class="col-sm-10">
 								<input class="form-control" type="text" name="arg" ng-model="cwlDoc.requirements.EnvVarRequirement.envDef[$index].envValue">
+								<p class="form-text text-muted">
+									The value of the environment variable.
+								</p>
 							</div>
 							<div class="col-sm-2">
 								<button class="btn btn-danger" ng-click="(cwlDoc.requirements.EnvVarRequirement.envDef).splice($index, 1);removeEnvVar()">
@@ -348,7 +354,7 @@
 		</form>
 	</div>
 	<h3>CWL Document</h3>
-	<pre id="cwlJson" pretty-json="cwlDoc"  />
+	<pre id="cwlJson" pretty-json="getCWLDoc()"  />
 </div>
 </div>
 </div>

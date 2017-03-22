@@ -1,6 +1,6 @@
 This is a project to create a form for generating CWL documents. It will not cover all of CWL, but most of the useful features.
 
-CWL has many ways to do the same thing (such as defining input arrays). This generator will likely only implement one way to do something.
+CWL has many ways to do the same thing (such as defining input arrays). This generator will choose one approach only.
 
 To run:
 

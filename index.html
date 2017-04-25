@@ -31,7 +31,7 @@
 					<div>
 						<form name="cwlForm" class="form-horizontal">
 							<h3>General Information</h3>
-
+							<hr>
 							<div class="form-group">
 								<label class="col-sm-2 control-label">CWL Version</label>
 								<div class="col-sm-10">
@@ -61,6 +61,23 @@
 									</p>
 								</div>
 							</div>
+
+							<div class="form-group">
+								<label class="col-sm-2 control-label">Docker Pull</label>
+								<div class="col-sm-10">
+									<input class="form-control" type="text" name="dockerReq" ng-model="dockerReq">
+									<p class="form-text text-muted">
+										Docker Pull value (ex. node:slim)
+									</p>
+								</div>
+							</div>	
+						</form>
+					</div>
+
+					<div>
+						<form name="cwlForm" class="form-horizontal">
+							<h3>Standard Streams</h3>
+							<hr>
 							<div class="form-group">
 								<label class="col-sm-2 control-label">stdin</label>
 								<div class="col-sm-10">
@@ -91,33 +108,13 @@
 						</form>
 					</div>
 
-					<div>
-						<form name="cwlForm" class="form-horizontal">
-							<h3>Hints</h3>
-							<div class="form-group">
-								<label class="col-sm-2 control-label">Docker Pull</label>
-								<div class="col-sm-10">
-									<input class="form-control" type="text" name="dockerReq" ng-model="dockerReq">
-									<p class="form-text text-muted">
-										Docker Pull value (ex. node:slim)
-									</p>
-								</div>
-							</div>						
-						</form>
-					</div>
-
-					<!-- <div>
-						<form name="cwlForm" class="form-horizontal">
-							<h3>Requirements</h3>						
-						</form>
-					</div> -->
-
 					<form name="cwlForm" class="form-horizontal">
-						<h3>Inputs</h3>
-						<button class="btn btn-default" ng-click="toggleMinimizeInput()" uib-tooltip="Toggle minimize inputs">
+						<button class="btn btn-default" style="float:left; margin-right:7px" ng-click="toggleMinimizeInput()" uib-tooltip="Toggle minimize inputs">
 							<span ng-show="minimizeInputs == false" class="glyphicon glyphicon-resize-small" aria-hidden="true"></span>
 							<span ng-show="minimizeInputs == true" class="glyphicon glyphicon-resize-full" aria-hidden="true"></span>
 						</button>
+						<h3>Inputs</h3>
+						<hr>
 						<p class="text-muted">
 							Drag to change order. Order of inputs here determines order on the command line.
 						</p>
@@ -207,11 +204,12 @@
 			</form>
 			<div>
 				<form name="cwlForm" class="form-horizontal">
-					<h3>Outputs</h3>
-					<button class="btn btn-default" ng-click="toggleMinimizeOutput()" uib-tooltip="Toggle minimize outputs">
+					<button class="btn btn-default" style="float:left; margin-right:7px" ng-click="toggleMinimizeOutput()" uib-tooltip="Toggle minimize outputs">
 						<span ng-show="minimizeOutputs == false" class="glyphicon glyphicon-resize-small" aria-hidden="true"></span>
 						<span ng-show="minimizeOutputs == true" class="glyphicon glyphicon-resize-full" aria-hidden="true"></span>
 					</button>
+					<h3>Outputs</h3>
+					<hr>
 					<p class="text-muted">
 						Drag to change order.
 					</p>
@@ -287,9 +285,7 @@
 	<div>
 		<form name="cwlForm" class="form-horizontal">
 			<h3>Extras</h3>
-			<p class="form-text text-muted">
-				Less commonly used settings.
-			</p>
+			<hr>
 			<div class="form-group col-sm-12">
 				<label class="control-label">Additional Command Line Arguments</label>
 				<p class="form-text text-muted">
@@ -354,6 +350,7 @@
 		</form>
 	</div>
 	<h3>CWL Document</h3>
+	<hr>
 	<pre id="cwlJson" pretty-json="getCWLDoc()"  />
 </div>
 </div>
